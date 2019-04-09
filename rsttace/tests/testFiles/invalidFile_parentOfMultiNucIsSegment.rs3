@@ -1,0 +1,13 @@
+<rst>
+  <header>
+    <relations>
+      <rel name="list" type="multinuc" />
+    </relations>
+  </header>
+  <body>
+    <segment id="42" parent="4" relname="list">A</segment>
+    <segment id="122" parent="4" relname="list">B</segment>
+    <segment id="1" parent="4" relname="list">C</segment>
+    <segment id="4">D</segment>
+  </body>
+</rst>

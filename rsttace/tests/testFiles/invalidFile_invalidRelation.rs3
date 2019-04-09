@@ -1,0 +1,11 @@
+<rst>
+  <header>
+    <relations>
+      <rel name="background" type="rst" />
+      <rel name="sequence" type="multinuc" />
+      <rel name="sequence" type="something" />
+    </relations>
+  </header>
+  <body>
+  </body>
+</rst>

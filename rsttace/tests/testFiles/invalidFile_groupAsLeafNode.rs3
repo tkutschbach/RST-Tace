@@ -1,0 +1,15 @@
+<rst>
+  <header>
+    <relations>
+      <rel name="list" type="multinuc" />
+      <rel name="reason" type="rst" />
+    </relations>
+  </header>
+  <body>
+    <segment id="42" parent="4" relname="list">A</segment>
+    <segment id="122" parent="4" relname="list">B</segment>
+    <segment id="1" parent="4" relname="list">C</segment>
+    <group id="5" type="span" parent="4" relname="list" />
+    <group id="4" type="multinuc" />
+  </body>
+</rst>
