@@ -24,7 +24,7 @@ class RelTableLogger(IRelTableOutput):
         header = createRelCsvHeader()
         writeFile = self.__isNotEmpty(self.outputFile)
         if writeFile:
-            with open(self.outputFile+'.csv', 'w') as csvfile:
+            with open(self.outputFile, 'w') as csvfile:
                 csvWriter = csv.writer(csvfile)
                 csvWriter.writerow(header)
                 for relation in relTable:
@@ -73,17 +73,23 @@ class CompTableLogger(IComparisonTableOutput):
                     if comp.matchingDistance == MatchingDistance.NO_MATCHING:
                         # own line for rel1
                         id_str = str(i+biasID)
-                        csvRow = [id_str, ""] + rel1_strLst + [""] + createEmptyRelCsvEntry() + ["", match_str] + createEmptyEvaluation()
+                        csvRow = [id_str, ""] + rel1_strLst + [""] + \
+                            createEmptyRelCsvEntry() + ["", match_str] + \
+                            createEmptyEvaluation()
                         csvWriter.writerow(csvRow)
                         # own line for rel2
                         id_str = str(i+biasID+1)
-                        csvRow = [id_str, ""] + createEmptyRelCsvEntry() + [""] + rel2_strLst + ["", match_str] + createEmptyEvaluation()
+                        csvRow = [id_str, ""] + createEmptyRelCsvEntry() + \
+                            [""] + rel2_strLst + ["", match_str] + \
+                            createEmptyEvaluation()
                         csvWriter.writerow(csvRow)
 
                         biasID += 1
                     else:
                         id_str = str(i+biasID)
-                        csvRow = [id_str, ""] + rel1_strLst + [""] + rel2_strLst + ["", match_str] + createEvaluationString(comp.evaluation)
+                        csvRow = [id_str, ""] + rel1_strLst + [""] + \
+                            rel2_strLst + ["", match_str] + \
+                            createEvaluationString(comp.evaluation)
                         csvWriter.writerow(csvRow)
 
     def __isNotEmpty(self, s: str) -> bool:
@@ -142,7 +148,8 @@ def createEmptyRelCsvEntry() -> list:
     return ["", "", "", "", "", "", "", "", ""]
 
 
-def createStringForRelElement(relElem: RelElement, writeNuclearity: bool) -> str:
+def createStringForRelElement(relElem: RelElement,
+                              writeNuclearity: bool) -> str:
     if relElem.minID != relElem.maxID:
         numberStr = str(relElem.minID) + "-" + str(relElem.maxID)
     else:

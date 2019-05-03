@@ -5,10 +5,11 @@ Created on Sat Jul 14 14:46:59 2018
 @author: tinokuba
 """
 
-from unittest import TestCase
+from unittest import TestCase, skip
 import rsttace.commandline as comline
 
 
+@skip("Tested function is obsolete and has been removed")
 class TestFolderProcessing(TestCase):
     actualNumberOfCalls: int
     fakeFileList: list
@@ -54,6 +55,7 @@ class TestFolderProcessing(TestCase):
         return self.fakeFileList
 
 
+@skip("Tested function is obsolete and has been removed")
 class TestArgumentProcessing(TestCase):
     isFile: bool
     isDirectory: bool
