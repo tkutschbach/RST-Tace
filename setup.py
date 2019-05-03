@@ -19,7 +19,13 @@ setup(name='rsttace',
       url='https://github.com/tkutschbach/Rst-Tace',
       author='Tino Kutschbach',
       license='MIT',
-      packages=['rsttace'],
+      packages=[
+          'rsttace',
+          'rsttace.core',
+          'rsttace.controller',
+          'rsttace.input',
+          'rsttace.output'
+      ],
       package_dir={'': '.'},
       install_requires=[
           'anytree', 'scipy'
