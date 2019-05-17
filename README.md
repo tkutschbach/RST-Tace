@@ -14,7 +14,7 @@ RST-Tace can be installed by the following command (once Python 3 has been insta
 ```pip3 install git+https://github.com/tkutschbach/RST-Tace.git```
 
 ## Usage
-After successful installation RST-Tace can used on the terminal via: `rsttace`
+After successful installation, RST-Tace can be used on the terminal via: `rsttace`
 
 RST-Tace currently offers the following functionality:
 

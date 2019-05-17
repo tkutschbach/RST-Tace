@@ -7,7 +7,7 @@ def readme():
 
 
 setup(name='rsttace',
-      version='0.1',
+      version='0.1.0',
       description='RST-Tace',
       long_description=readme(),
       classifiers=[
@@ -28,7 +28,13 @@ setup(name='rsttace',
       ],
       package_dir={'': '.'},
       install_requires=[
-          'anytree', 'scipy'
+          'anytree',
+          'click',
+          'tabulate',
+          'numpy',
+          'scipy',
+          'scikit-learn'
+          'pandas'
       ],
       test_suite='nose.collector',
       tests_require=['nose', 'nose-cover3'],

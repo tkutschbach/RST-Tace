@@ -59,7 +59,7 @@ class CompTableLogger(IComparisonTableOutput):
         header = createCompCsvHeader()
         writeFile = self.__isNotEmpty(self.outputFile)
         if writeFile:
-            with open(self.outputFile+'.csv', 'w') as csvfile:
+            with open(self.outputFile, 'w') as csvfile:
                 csvWriter = csv.writer(csvfile)
                 csvWriter.writerow(header)
 
