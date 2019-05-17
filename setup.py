@@ -33,7 +33,7 @@ setup(name='rsttace',
           'tabulate',
           'numpy',
           'scipy',
-          'scikit-learn'
+          'scikit-learn',
           'pandas'
       ],
       test_suite='nose.collector',
