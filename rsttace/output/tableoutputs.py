@@ -29,7 +29,11 @@ class RelTableLogger(IRelTableOutput):
 class RelTableCliOutput(IRelTableOutput):
     def write(self, relTable: RelTable):
         dataFrame = createRelationsDataframe(relTable)
-        print(tabulate(dataFrame, headers='keys', showindex=False))
+        cliOutput = tabulate(dataFrame,
+                             headers='keys',
+                             tablefmt="rst",
+                             showindex=False)
+        print(cliOutput)
 
 
 class RelTableDummyOutput(IRelTableOutput):
@@ -59,7 +63,11 @@ class CompTableLogger(IComparisonTableOutput):
 class CompTableCliOutput(IComparisonTableOutput):
     def write(self, compTable: ComparisonTable):
         dataFrame = createComparisonDataframe(compTable)
-        print(tabulate(dataFrame, headers='keys', showindex=False))
+        cliOutput = tabulate(dataFrame,
+                             headers='keys',
+                             tablefmt="rst",
+                             showindex=False)
+        print(cliOutput)
 
 
 class CompTableDummyOutput(IComparisonTableOutput):

@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from rsttace.controller.interactors import AnalyseInteractor, CompareInteractor
 from rsttace.controller import IRstInput
-from rsttace.output import IRelTableOutput, IComparisonTableOutput
+from rsttace.controller import IRelTableOutput, IComparisonTableOutput
 from rsttace.core import RstTree
 from rsttace.core import RelTable, ComparisonTable
 

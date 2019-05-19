@@ -9,7 +9,6 @@ class RelElement():
 
 
 class Relation():
-#    nr: int
     def __init__(self):
         self.name: str
         self.isMultiNuclear: bool
