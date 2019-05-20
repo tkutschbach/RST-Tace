@@ -42,6 +42,7 @@ def analyse(rstfile: str,
     if(verbose or outputfile == ""):
         tableOutputs.append(RelTableCliOutput())
 
+    print("\nAnalyse and list relations of RST tree in: " + rstfile)
     interactor = AnalyseInteractor(rstParser, tableOutputs)
     interactor.run()
 
@@ -71,6 +72,9 @@ def compare(rstfile1: str,
     if(verbose or outputfile == ""):
         tableOutputs.append(CompTableCliOutput())
 
+    print("\nComparing the following two RST trees:")
+    print("RST tree A: " + rstfile1)
+    print("RST tree B: " + rstfile2)
     interactor = CompareInteractor(rstParser1, rstParser2, tableOutputs)
     interactor.run()
 

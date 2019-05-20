@@ -18,8 +18,11 @@ class RelTableLogger(IRelTableOutput):
     def write(self, relTable: RelTable):
         writeFile = self.__isNotEmpty(self.outputFile)
         if writeFile:
+            print("\nWrite result table of RST tree analysis to: "
+                  + self.outputFile)
             dataFrame = createRelationsDataframe(relTable)
             dataFrame.to_csv(self.outputFile, index=False)
+            print("Output file written successfully.")
 
     def __isNotEmpty(self, s: str) -> bool:
         """ Checks whether string is empty or not """
@@ -33,6 +36,8 @@ class RelTableCliOutput(IRelTableOutput):
                              headers='keys',
                              tablefmt="rst",
                              showindex=False)
+
+        print("\nResult table of RST tree analysis:")
         print(cliOutput)
 
 
@@ -50,10 +55,21 @@ class CompTableLogger(IComparisonTableOutput):
         pass
 
     def write(self, compTable: ComparisonTable):
+        evalTableFrame = createEvaluationDataframe(compTable)
+        evalTableCli = tabulate(evalTableFrame,
+                                headers='keys',
+                                tablefmt="rst",
+                                showindex=True)
+        print("\nStatistical metrics:")
+        print(evalTableCli)
+
         writeFile = self.__isNotEmpty(self.outputFile)
         if writeFile:
+            print("\nWrite result table of RST tree pair comparison to: "
+                  + self.outputFile)
             dataFrame = createComparisonDataframe(compTable)
             dataFrame.to_csv(self.outputFile, index=False)
+            print("Output file written successfully.")
 
     def __isNotEmpty(self, s: str) -> bool:
         """ Checks whether string is empty or not """
@@ -62,12 +78,23 @@ class CompTableLogger(IComparisonTableOutput):
 
 class CompTableCliOutput(IComparisonTableOutput):
     def write(self, compTable: ComparisonTable):
-        dataFrame = createComparisonDataframe(compTable)
-        cliOutput = tabulate(dataFrame,
-                             headers='keys',
-                             tablefmt="rst",
-                             showindex=False)
-        print(cliOutput)
+        # prepare tables
+        compTableFrame = createComparisonDataframe(compTable)
+        evalTableFrame = createEvaluationDataframe(compTable)
+        compTableCli = tabulate(compTableFrame,
+                                headers='keys',
+                                tablefmt="rst",
+                                showindex=False)
+        evalTableCli = tabulate(evalTableFrame,
+                                headers='keys',
+                                tablefmt="rst",
+                                showindex=True)
+
+        # write on CLI
+        print("\nResult table of RST tree pair comparison:")
+        print(compTableCli)
+        print("\nStatistical metrics:")
+        print(evalTableCli)
 
 
 class CompTableDummyOutput(IComparisonTableOutput):
@@ -120,6 +147,12 @@ def createComparisonDataframe(compTable: ComparisonTable) -> pd.DataFrame:
             rows.append(csvRow)
 
     return pd.DataFrame.from_records(rows, columns=labels)
+
+
+def createEvaluationDataframe(compTable: ComparisonTable) -> pd.DataFrame:
+    combined = {"Matching Ratios": compTable.matchingRatios,
+                "Inter Annotator Agreement": compTable.cohensKappas}
+    return pd.DataFrame.from_dict(combined, 'index')
 
 
 def createRelCsvHeader() -> list:

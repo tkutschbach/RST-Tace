@@ -88,9 +88,13 @@ class Comparison():
 
 class ComparisonTable():
     __comparisons: list
+    matchingRatios: dict
+    cohensKappas: dict
 
     def __init__(self):
         self.__comparisons = []
+        self.matchingRatios = {}
+        self.cohensKappas = {}
         return
 
     def get(self, index: int):
@@ -104,3 +108,110 @@ class ComparisonTable():
 
     def __iter__(self):
         return iter(self.__comparisons)
+
+    def runStatAnalysis(self):
+        # re-organize data structures
+        labels1_rel = []
+        labels1_nuc = []
+        labels1_con = []
+        labels1_att = []
+
+        labels2_rel = []
+        labels2_nuc = []
+        labels2_con = []
+        labels2_att = []
+
+        matches_rel = int(0)
+        matches_nuc = int(0)
+        matches_con = int(0)
+        matches_att = int(0)
+        totalNum = int(0)
+
+        for comp in self.__comparisons:
+            if comp.matchingDistance != MatchingDistance.NO_MATCHING:
+                labels1_rel.append(comp.relation1.name)
+                labels2_rel.append(comp.relation2.name)
+
+                labels1_nuc.append(extractNuclearityType(comp.relation1))
+                labels2_nuc.append(extractNuclearityType(comp.relation2))
+
+                labels1_con.append(extractRelElementString(comp.relation1.constituent))
+                labels2_con.append(extractRelElementString(comp.relation2.constituent))
+
+                labels1_att.append(extractRelElementString(comp.relation1.attachmentPoint))
+                labels2_att.append(extractRelElementString(comp.relation2.attachmentPoint))
+
+                matches_rel += 1 if comp.evaluation.relation else 0
+                matches_nuc += 1 if comp.evaluation.nuclearity.equalDirection and \
+                                    comp.evaluation.nuclearity.equalMonoMulti else 0
+                matches_con += 1 if comp.evaluation.constituent else 0
+                matches_att += 1 if comp.evaluation.attachmentPoint else 0
+
+                totalNum += 1
+            else:
+                labels1_rel.append(comp.relation1.name)
+                labels1_rel.append("None")
+                labels2_rel.append("None")
+                labels2_rel.append(comp.relation2.name)
+
+                labels1_nuc.append(extractNuclearityType(comp.relation1))
+                labels1_nuc.append("None")
+                labels2_nuc.append("None")
+                labels2_nuc.append(extractNuclearityType(comp.relation2))
+
+                labels1_con.append(extractRelElementString(comp.relation1.constituent))
+                labels1_con.append("None")
+                labels2_con.append("None")
+                labels2_con.append(extractRelElementString(comp.relation2.constituent))
+
+                labels1_att.append(extractRelElementString(comp.relation1.attachmentPoint))
+                labels1_att.append("None")
+                labels2_att.append("None")
+                labels2_att.append(extractRelElementString(comp.relation2.attachmentPoint))
+
+                totalNum += 2
+
+        # calculate matching ratios
+        self.matchingRatios.clear()
+        self.matchingRatios["Nuclearity"] = matches_nuc / totalNum if totalNum > 0 else 0
+        self.matchingRatios["Relation"] = matches_rel / totalNum if totalNum > 0 else 0
+        self.matchingRatios["Constituent"] = matches_con / totalNum if totalNum > 0 else 0
+        self.matchingRatios["Attachment point"] = matches_att / totalNum if totalNum > 0 else 0
+        self.matchingRatios["Average"] = calcAverageOfDictValues(self.matchingRatios)
+
+        # calculate inter annotator agreement (cohen's kappa)
+        self.cohensKappas.clear()
+        self.cohensKappas["Nuclearity"] = cohensKappa(labels1_nuc, labels2_nuc)
+        self.cohensKappas["Relation"] = cohensKappa(labels1_rel, labels2_rel)
+        self.cohensKappas["Constituent"] = cohensKappa(labels1_con, labels2_con)
+        self.cohensKappas["Attachment point"] = cohensKappa(labels1_att, labels2_att)
+        self.cohensKappas["Average"] = calcAverageOfDictValues(self.cohensKappas)
+
+        return
+
+
+def extractNuclearityType(rel: Relation):
+    if rel.isMultiNuclear:
+        return "multi"
+    else:
+        if rel.constituent.maxID < rel.attachmentPoint.minID:
+            return "right"
+        else:
+            return "left"
+
+
+def extractRelElementString(elem: RelElement):
+    return str(elem.minID) + "-" + str(elem.maxID)
+
+
+def calcAverageOfDictValues(d: dict):
+    avgValue = 0.
+    for value in d.values():
+        avgValue += value
+    avgValue /= len(d)
+    return avgValue
+
+
+def cohensKappa(labels1: list, labels2: list):
+    from sklearn.metrics import cohen_kappa_score
+    return cohen_kappa_score(labels1, labels2)

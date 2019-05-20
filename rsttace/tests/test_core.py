@@ -5,7 +5,7 @@ Created on Sat Jul 14 14:46:59 2018
 @author: tinokuba
 """
 
-from unittest import TestCase
+from unittest import TestCase, skip
 from rsttace.core import TableGenerator, TableEvaluator, ComparisonTable
 from rsttace.core import RstTree, RstNode, RelTable, RstType
 from rsttace.core import Relation
@@ -320,3 +320,11 @@ class TestTableEvaluator(TestCase):
         # Check
         self.assertIsInstance(compTable, ComparisonTable)
         self.assertEqual(compTable.length(), 0)
+
+    @skip("")
+    def test_comparisons(self):
+        self.fail("TODO: Implement test cases for table comparisons")
+
+    @skip("")
+    def test_kappaCalculations(self):
+        self.fail("TODO: Implement test cases for kappa calculations")

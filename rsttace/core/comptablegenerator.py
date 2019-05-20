@@ -40,6 +40,7 @@ class TableEvaluator():
             matchingDist = distanceMatrix[rel1_ID][rel2_ID]
             compTable.append(Comparison(rel1, rel2, matchingDist))
 
+        compTable.runStatAnalysis()
         return compTable
 
 
