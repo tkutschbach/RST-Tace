@@ -21,7 +21,7 @@ class RelTableLogger(IRelTableOutput):
             print("\nWrite result table of RST tree analysis to: "
                   + self.outputFile)
             dataFrame = createRelationsDataframe(relTable)
-            dataFrame.to_csv(self.outputFile, index=False)
+            dataFrame.to_csv(self.outputFile, index=False, encoding='utf-8-sig')
             print("Output file written successfully.")
 
     def __isNotEmpty(self, s: str) -> bool:
@@ -68,7 +68,7 @@ class CompTableLogger(IComparisonTableOutput):
             print("\nWrite result table of RST tree pair comparison to: "
                   + self.outputFile)
             dataFrame = createComparisonDataframe(compTable)
-            dataFrame.to_csv(self.outputFile, index=False)
+            dataFrame.to_csv(self.outputFile, index=False, encoding='utf-8-sig')
             print("Output file written successfully.")
 
     def __isNotEmpty(self, s: str) -> bool:
