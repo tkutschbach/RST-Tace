@@ -1,7 +1,9 @@
 # RST-Tace
+### A tool for automatic comparison and evaluation of RST trees
 
-This repository is still under construction.
-Updates and more information will follow.
+*RST-Tace allows RST trees annotated by different annotators to be compared and evaluated automatically, aiming to measure the agreement between two annotators. It can be used regardless of the language or the size of rhetorical trees. Based on Iruskieta's method (Iruskieta et.al.,2015), constituents do not need to coincide in their entirety to be compared, only the central subconstituent (CS) which indicates the most important unit of the satellite span, has to be identical. With this restriction, RST Trees are compared using four independent factors: Constituent(C), Attachment point (A), Nuclearity (N) and Relation (R).
+The result is reflected by F-measure and inter-annotator agreement. 
+For more information, please refer to Wan et.al. (2019).*
 
 ## Getting Started
 
@@ -32,8 +34,9 @@ Stating an output file (via `-o <output-file>.csv`) is optional. If ommited, the
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/tkutschbach/RST-Tace/tags).
 
 ## Authors
-* **Shujun Wan** - *Theoretical methodology* 
+* **Shujun Wan** - *Theoretical methodology* - [ShujunW](https://github.com/ShujunW)
 * **Tino Kutschbach** - *Implementation* - [tkutschbach](https://github.com/tkutschbach)
 
 ## References
-* Wan, Shujun; Kutschbach, Tino; Lüdeling, Anke & Stede, Manfred (2019) **RST-Tace. A tool for automatic comparison and evaluation of RST trees.** In: *Proceedings of Discourse Relation Parsing and Treebanking* ([DISRPT](https://sites.google.com/view/disrpt2019/)). NAACL Workshop, Minneapolis.
+* Wan, Shujun; Kutschbach, Tino; Lüdeling, Anke & Stede, Manfred (2019): **RST-Tace. A tool for automatic comparison and evaluation of RST trees.** In: *Proceedings of Discourse Relation Parsing and Treebanking* ([DISRPT](https://sites.google.com/view/disrpt2019/)). NAACL Workshop, Minneapolis.
+* Mikel Iruskieta, Iria da Cunha, and Maite Taboada (2015): **A qualitative comparison method for rhetorical structures: identifying different discourse structures in multilingual corpora**. In: *Language Resources and Evaluation*, 49(2):263–309.
