@@ -45,7 +45,9 @@ class BodyEntry():
         if self.__validBodyEntry(xmlEntry):
             self.entryID = xmlEntry.get('id')
             self.parent = xmlEntry.get('parent')
-            self.relname = xmlEntry.get('relname')
+            xmlRelname = xmlEntry.get('relname')
+            if isinstance(xmlRelname, str):
+                self.relname = xmlRelname.lower()
         else:
             raise InvalidRstFile("Invalid segment or group:\
                                   ID is missing")
@@ -123,7 +125,7 @@ def parseRelations(xmlBlock):
             for xmlEntry in xmlMeta:
                 if 'rel' == xmlEntry.tag:
                     try:
-                        rel_name = xmlEntry.get('name')
+                        rel_name = xmlEntry.get('name').lower()
                         rel_type = xmlEntry.get('type')
                         relations[rel_name] = rstTypeLUT[rel_type]
                     except KeyError:

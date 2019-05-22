@@ -180,6 +180,55 @@ class TestRstTreeParser_withFiles(TestCase):
         self.assertEqual([relation], rstTree.monoNucs)
         self.assertEqual([], rstTree.multiNucs)
 
+    def test_read_fileWithCapitalizedRelations(self):
+        path = join(self.filePath, 'capitalizedRelations.rs3')
+
+        parser = RstTreeParser(path)
+        rstTree = parser.read()
+
+        expectedRelations = dict({'span': RstType.SPAN,
+                                  'background': RstType.MONO_NUCLEAR,
+                                  'sequence': RstType.MULTI_NUCLEAR})
+        self.assertEqual(expectedRelations, rstTree.relations)
+
+        root: RstNode = rstTree.root
+        self.assertIsNotNone(root)
+        self.assertIsNone(root.text)
+        self.assertIsNone(root.toParent)
+        self.assertIsNone(root.toSibling)
+        self.assertIsInstance(root.toChildren, Span)
+        self.assertEqual([1, 2], root.segmentID)
+
+        span: Span = root.toChildren
+        self.assertIsNotNone(span)
+        self.assertIs(root, span.parent)
+        self.assertEqual(2, len(span.children))
+
+        segmentA: RstNode = span.children[0]
+        self.assertIsInstance(segmentA, RstNode)
+        self.assertIs(span, segmentA.toParent)
+        self.assertIsInstance(segmentA.toSibling, MonoNucRelation)
+        self.assertIsNone(segmentA.toChildren)
+        self.assertEqual("A", segmentA.text)
+        self.assertEqual([1], segmentA.segmentID)
+
+        segmentB: RstNode = span.children[1]
+        self.assertIsInstance(segmentB, RstNode)
+        self.assertIs(span, segmentB.toParent)
+        self.assertIsInstance(segmentB.toSibling, MonoNucRelation)
+        self.assertIsNone(segmentB.toChildren)
+        self.assertEqual("B", segmentB.text)
+        self.assertEqual([2], segmentB.segmentID)
+
+        relation: MonoNucRelation = segmentA.toSibling
+        self.assertIs(relation, segmentB.toSibling)
+        self.assertIs(relation.start, segmentB)
+        self.assertIs(relation.end, segmentA)
+        self.assertEqual("background", relation.relation)
+
+        self.assertEqual([relation], rstTree.monoNucs)
+        self.assertEqual([], rstTree.multiNucs)
+
     def test_read_fileWithSingleMultiNuc(self):
         path = join(self.filePath, 'singleMultiNuc.rs3')
 
