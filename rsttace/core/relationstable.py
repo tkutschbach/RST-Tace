@@ -37,3 +37,9 @@ class RelTable():
 
     def __iter__(self):
         return iter(self.__relations)
+
+    def __add__(self, relTable):
+        newTable = RelTable()
+        newTable._RelTable__relations += self.__relations
+        newTable._RelTable__relations += relTable._RelTable__relations
+        return newTable

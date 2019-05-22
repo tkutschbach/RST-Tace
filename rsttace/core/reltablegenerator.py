@@ -9,9 +9,8 @@ class TableGenerator():
         return
 
     def run(self, rstTree: RstTree) -> RelTable:
-        relTable = RelTable()
-
         # process mono-nuclear relations
+        monoRelTable = RelTable()
         for monoNuc in rstTree.monoNucs:
             cs = extractCentralSubconstituent(nodes=[monoNuc.start],
                                               isNuclear=False)
@@ -23,9 +22,10 @@ class TableGenerator():
             relation.attachmentPoint = extractRelElement(node=monoNuc.end,
                                                          isNuclear=True)
             relation.centralSubconstituent = cs
-            relTable.append(relation)
+            monoRelTable.append(relation)
 
         # process multi-nuclear relations
+        multiRelTable = RelTable()
         for multiNuc in rstTree.multiNucs:
             remainingNodes = deque(multiNuc.children)
             while len(remainingNodes) > 1:
@@ -42,9 +42,18 @@ class TableGenerator():
                                                          isNuclear=True)
                 relation.attachmentPoint = extractRelElement(node=pseudoNode,
                                                              isNuclear=True)
-                relTable.append(relation)
+                multiRelTable.append(relation)
 
-        return relTable
+        # sort relations table
+        monoRelTable.sort(key=sortRels)
+        multiRelTable.sort(key=sortRels)
+
+        return monoRelTable + multiRelTable
+
+
+def sortRels(rel: Relation):
+    return(0.99999*rel.centralSubconstituent[0].minID +
+           0.00001*rel.centralSubconstituent[-1].maxID)
 
 
 def extractRelElement(node: RstNode, isNuclear: bool) -> RelElement:
