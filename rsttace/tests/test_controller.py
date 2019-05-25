@@ -1,10 +1,14 @@
 from unittest import TestCase
 
-from rsttace.controller.interactors import AnalyseInteractor, CompareInteractor
+from rsttace.controller.interactors import AnalyseInteractor
+from rsttace.controller.interactors import CompareInteractor
+from rsttace.controller.interactors import EvaluateInteractor
 from rsttace.controller import IRstInput
-from rsttace.controller import IRelTableOutput, IComparisonTableOutput
+from rsttace.controller import IRelTableOutput
+from rsttace.controller import IComparisonTableOutput
+from rsttace.controller import IEvaluationTableOutput
 from rsttace.core import RstTree
-from rsttace.core import RelTable, ComparisonTable
+from rsttace.core import RelTable, ComparisonTable, EvaluationTable
 
 
 class FakeInput(IRstInput):
@@ -28,7 +32,15 @@ class FakeCompTableOutput(IComparisonTableOutput):
     def __init__(self):
         self.write_timesCalled = 0
 
-    def write(self, relTable: RelTable):
+    def write(self, compTable: ComparisonTable):
+        self.write_timesCalled += 1
+
+
+class FakeEvalTableOutput(IEvaluationTableOutput):
+    def __init__(self):
+        self.write_timesCalled = 0
+
+    def write(self, evalTable: EvaluationTable):
         self.write_timesCalled += 1
 
 
@@ -41,7 +53,7 @@ class FakeGenerator():
         return RelTable()
 
 
-class FakeEvaluator():
+class FakeComparer():
     def __init__(self):
         self.run_timesCalled = 0
 
@@ -114,13 +126,13 @@ class TestCompareInteractor(TestCase):
         rstInput2 = FakeInput()
         compOutput = FakeCompTableOutput()
         interactor = CompareInteractor(rstInput1, rstInput2, [compOutput])
-        interactor.tableEvaluator = FakeEvaluator()
+        interactor.tableComparer = FakeComparer()
 
         interactor.run()
 
         self.assertEqual(rstInput1.read_timesCalled, 1)
         self.assertEqual(rstInput2.read_timesCalled, 1)
-        self.assertEqual(interactor.tableEvaluator.run_timesCalled, 1)
+        self.assertEqual(interactor.tableComparer.run_timesCalled, 1)
         self.assertEqual(compOutput.write_timesCalled, 1)
 
     def test_numberOfCalls_twoOutputs(self):
@@ -131,13 +143,13 @@ class TestCompareInteractor(TestCase):
         interactor = CompareInteractor(rstInput1,
                                        rstInput2,
                                        [compOutput1, compOutput2])
-        interactor.tableEvaluator = FakeEvaluator()
+        interactor.tableComparer = FakeComparer()
 
         interactor.run()
 
         self.assertEqual(rstInput1.read_timesCalled, 1)
         self.assertEqual(rstInput2.read_timesCalled, 1)
-        self.assertEqual(interactor.tableEvaluator.run_timesCalled, 1)
+        self.assertEqual(interactor.tableComparer.run_timesCalled, 1)
         self.assertEqual(compOutput1.write_timesCalled, 1)
         self.assertEqual(compOutput2.write_timesCalled, 1)
 
@@ -149,3 +161,52 @@ class TestCompareInteractor(TestCase):
         returnVal = interactor.run()
 
         self.assertIsInstance(returnVal, ComparisonTable)
+
+
+class TestEvaluateInteractor(TestCase):
+    def test_numberOfCalls(self):
+        # Build
+        pair1tree1 = FakeInput()
+        pair1tree2 = FakeInput()
+        pair1compOut = FakeCompTableOutput()
+
+        pair2tree1 = FakeInput()
+        pair2tree2 = FakeInput()
+        pair2compOut = FakeCompTableOutput()
+
+        pair3tree1 = FakeInput()
+        pair3tree2 = FakeInput()
+        pair3compOut = FakeCompTableOutput()
+
+        evalOutput1 = FakeEvalTableOutput()
+        evalOutput2 = FakeEvalTableOutput()
+
+        pair1triple = (pair1tree1, pair1tree2, pair1compOut)
+        pair2triple = (pair2tree1, pair2tree2, pair2compOut)
+        pair3triple = (pair3tree1, pair3tree2, pair3compOut)
+
+        # Operate
+        interactor = EvaluateInteractor([pair1triple,
+                                         pair2triple,
+                                         pair3triple],
+                                        [evalOutput1, evalOutput2])
+
+        returnVal = interactor.run()
+
+        # Check
+        self.assertIsInstance(returnVal, EvaluationTable)
+
+        self.assertEqual(pair1tree1.read_timesCalled, 1)
+        self.assertEqual(pair1tree2.read_timesCalled, 1)
+        self.assertEqual(pair1compOut.write_timesCalled, 1)
+
+        self.assertEqual(pair2tree1.read_timesCalled, 1)
+        self.assertEqual(pair2tree2.read_timesCalled, 1)
+        self.assertEqual(pair2compOut.write_timesCalled, 1)
+
+        self.assertEqual(pair3tree1.read_timesCalled, 1)
+        self.assertEqual(pair3tree2.read_timesCalled, 1)
+        self.assertEqual(pair3compOut.write_timesCalled, 1)
+
+        self.assertEqual(evalOutput1.write_timesCalled, 1)
+        self.assertEqual(evalOutput2.write_timesCalled, 1)

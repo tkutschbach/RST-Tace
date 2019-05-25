@@ -6,7 +6,7 @@ Created on Sat Jul 14 14:46:59 2018
 """
 
 from unittest import TestCase, skip
-from rsttace.core import TableGenerator, TableEvaluator, ComparisonTable
+from rsttace.core import TableGenerator, TableComparer, ComparisonTable
 from rsttace.core import RstTree, RstNode, RelTable, RstType
 from rsttace.core import Relation
 from rsttace.core.rsttree import MonoNucRelation, MultiNucRelation, Span
@@ -312,7 +312,7 @@ class TestTableEvaluator(TestCase):
         """ Given empty RstTables, the TableEvaluator shall return
             an empty ComparisonTable """
         # Build
-        tabEval = TableEvaluator()
+        tabEval = TableComparer()
         emptyRelTable1 = RelTable()
         emptyRelTable2 = RelTable()
         # Operate

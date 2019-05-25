@@ -1,8 +1,8 @@
 from rsttace.controller import IRstInput
-from rsttace.core import TableGenerator, TableEvaluator
+from rsttace.core import TableGenerator, TableComparer, TableEvaluator
 
 
-class AnalyseInteractor():
+class AnalyseInteractor:
     def __init__(self,
                  rstInput: IRstInput,
                  tableOutputs: list):
@@ -25,7 +25,7 @@ class CompareInteractor:
                  tableOutputs: list):
         self.rstInput1 = rstInput1
         self.rstInput2 = rstInput2
-        self.tableEvaluator = TableEvaluator()
+        self.tableComparer = TableComparer()
         self.tableOutputs = tableOutputs
 
     def run(self):
@@ -33,7 +33,27 @@ class CompareInteractor:
         analyse2 = AnalyseInteractor(self.rstInput2, [])
         relTable1 = analyse1.run()
         relTable2 = analyse2.run()
-        compTable = self.tableEvaluator.run(relTable1, relTable2)
+        compTable = self.tableComparer.run(relTable1, relTable2)
         for output in self.tableOutputs:
             output.write(compTable)
         return compTable
+
+
+class EvaluateInteractor:
+    def __init__(self,
+                 pairTripleList: list,
+                 tableOutputs: list):
+        self.pairTripleList = pairTripleList
+        self.tableOutputs = tableOutputs
+        self.tableEvaluator = TableEvaluator()
+
+    def run(self):
+        compTables = []
+        for rstInput1, rstInput2, compTableOut in self.pairTripleList:
+            compare = CompareInteractor(rstInput1, rstInput2, [compTableOut])
+            compTable = compare.run()
+            compTables.append(compTable)
+        evalTable = self.tableEvaluator.run(compTables)
+        for output in self.tableOutputs:
+            output.write(evalTable)
+        return evalTable

@@ -10,4 +10,6 @@ from .relationstable import RelTable, Relation, RelElement
 from .reltablegenerator import TableGenerator
 from .comparisontable import ComparisonTable, Comparison,\
                              MatchingDistance, Equivalency
-from .comptablegenerator import TableEvaluator
+from .comptablegenerator import TableComparer
+from .evaluationtable import EvaluationTable
+from .evaltablegenerator import TableEvaluator

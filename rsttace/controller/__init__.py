@@ -5,8 +5,8 @@ Created on Sat Nov 23 00:49:01 2018
 @author: tinokuba
 """
 from abc import ABC, abstractmethod
-from rsttace.core import RstTree, RelTable, ComparisonTable
-from rsttace.core import TableGenerator, TableEvaluator
+from rsttace.core import RstTree, RelTable, ComparisonTable, EvaluationTable
+from rsttace.core import TableGenerator, TableComparer, TableEvaluator
 
 # Interface definitions ######################################################
 
@@ -26,4 +26,10 @@ class IRelTableOutput(ABC):
 class IComparisonTableOutput(ABC):
     @abstractmethod
     def write(self, compTable: ComparisonTable):
+        pass
+
+
+class IEvaluationTableOutput(ABC):
+    @abstractmethod
+    def write(self, evalTable: EvaluationTable):
         pass

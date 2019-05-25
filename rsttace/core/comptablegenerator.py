@@ -5,7 +5,7 @@ from scipy.optimize import linear_sum_assignment
 from numpy import array, zeros
 
 
-class TableEvaluator():
+class TableComparer():
     def __init__(self):
         return
 
