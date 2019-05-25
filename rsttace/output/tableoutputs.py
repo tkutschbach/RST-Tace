@@ -3,8 +3,11 @@ from tabulate import tabulate
 
 from rsttace.core import RelTable, Relation, RelElement
 from rsttace.core import ComparisonTable, Comparison
+from rsttace.core import EvaluationTable
 from rsttace.core import MatchingDistance, Equivalency
-from rsttace.controller import IRelTableOutput, IComparisonTableOutput
+from rsttace.controller import IRelTableOutput
+from rsttace.controller import IComparisonTableOutput
+from rsttace.controller import IEvaluationTableOutput
 
 
 # RelTable outputs
@@ -99,6 +102,34 @@ class CompTableCliOutput(IComparisonTableOutput):
 
 class CompTableDummyOutput(IComparisonTableOutput):
     def write(self, compTable: ComparisonTable):
+        pass
+
+
+# Eval table output
+
+
+class EvalTableLogger(IEvaluationTableOutput):
+    def __init__(self, outputFile=""):
+        self.outputFile = outputFile
+        pass
+
+    def write(self, evalTable: EvaluationTable):
+        evalTable.dataFrame.to_csv(self.outputFile, index=False)
+        pass
+
+
+class EvalTableCliOutput(IEvaluationTableOutput):
+    def write(self, evalTable: EvaluationTable):
+        evalTableCli = tabulate(evalTable.dataFrame,
+                                headers='keys',
+                                tablefmt="rst",
+                                showindex=False)
+        print(evalTableCli)
+        pass
+
+
+class EvalTableDummyOutput(IEvaluationTableOutput):
+    def write(self, evalTable: EvaluationTable):
         pass
 
 

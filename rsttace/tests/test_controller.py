@@ -64,6 +64,15 @@ class FakeComparer():
         return ComparisonTable()
 
 
+class FakeEvaluator():
+    def __init__(self):
+        self.run_timesCalled = 0
+
+    def run(self, compTables: list) -> EvaluationTable:
+        self.run_timesCalled += 1
+        return EvaluationTable(None)
+
+
 class TestAnalyseInteractor(TestCase):
     def test_numberOfCalls_noOutput(self):
         rstInput = FakeInput()
@@ -190,10 +199,12 @@ class TestEvaluateInteractor(TestCase):
                                          pair2triple,
                                          pair3triple],
                                         [evalOutput1, evalOutput2])
+        interactor.tableEvaluator = FakeEvaluator()
 
         returnVal = interactor.run()
 
         # Check
+        self.assertEqual(interactor.tableEvaluator.run_timesCalled, 1)
         self.assertIsInstance(returnVal, EvaluationTable)
 
         self.assertEqual(pair1tree1.read_timesCalled, 1)

@@ -307,16 +307,16 @@ class TestTableGenerator(TestCase):
         self.assertEqual(True, multiRel2.attachmentPoint.isLeaf)
 
 
-class TestTableEvaluator(TestCase):
+class TestTableComparer(TestCase):
     def test_forEmptyRelTables(self):
-        """ Given empty RstTables, the TableEvaluator shall return
+        """ Given empty RstTables, the TableComparer shall return
             an empty ComparisonTable """
         # Build
-        tabEval = TableComparer()
+        tabComp = TableComparer()
         emptyRelTable1 = RelTable()
         emptyRelTable2 = RelTable()
         # Operate
-        compTable = tabEval.run(emptyRelTable1, emptyRelTable2)
+        compTable = tabComp.run(emptyRelTable1, emptyRelTable2)
         # Check
         self.assertIsInstance(compTable, ComparisonTable)
         self.assertEqual(compTable.length(), 0)
@@ -328,3 +328,9 @@ class TestTableEvaluator(TestCase):
     @skip("")
     def test_kappaCalculations(self):
         self.fail("TODO: Implement test cases for kappa calculations")
+
+
+class TestTableEvaluator(TestCase):
+    @skip("")
+    def test_comparisons(self):
+        self.fail("TODO: Implement test cases for comp table evaluation")
