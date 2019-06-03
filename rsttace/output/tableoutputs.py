@@ -58,17 +58,17 @@ class CompTableLogger(IComparisonTableOutput):
         pass
 
     def write(self, compTable: ComparisonTable):
-        evalTableFrame = createEvaluationDataframe(compTable)
-        evalTableCli = tabulate(evalTableFrame,
-                                headers='keys',
-                                tablefmt="rst",
-                                showindex=True)
-        print("\nStatistical metrics:")
-        print(evalTableCli)
-
+#        evalTableFrame = createEvaluationDataframe(compTable)
+#        evalTableCli = tabulate(evalTableFrame,
+#                                headers='keys',
+#                                tablefmt="rst",
+#                                showindex=True)
+#        print("\nStatistical metrics:")
+#        print(evalTableCli)
+#
         writeFile = self.__isNotEmpty(self.outputFile)
         if writeFile:
-            print("\nWrite result table of RST tree pair comparison to: "
+            print("Write result table of RST tree pair comparison to: "
                   + self.outputFile)
             dataFrame = createComparisonDataframe(compTable)
             dataFrame.to_csv(self.outputFile, index=False, encoding='utf-8-sig')
@@ -114,16 +114,29 @@ class EvalTableLogger(IEvaluationTableOutput):
         pass
 
     def write(self, evalTable: EvaluationTable):
-        evalTable.dataFrame.to_csv(self.outputFile, index=False)
+
+        writeFile = self.__isNotEmpty(self.outputFile)
+        if writeFile:
+            print("Write result table of RST tree pair comparison to: "
+                  + self.outputFile)
+            evalTable.dataFrame.to_csv(self.outputFile, index=False)
+            print("Output file written successfully.")
         pass
+
+    def __isNotEmpty(self, s: str) -> bool:
+        """ Checks whether string is empty or not """
+        return bool(s and s.strip())
 
 
 class EvalTableCliOutput(IEvaluationTableOutput):
     def write(self, evalTable: EvaluationTable):
+        # prepare tables
         evalTableCli = tabulate(evalTable.dataFrame,
                                 headers='keys',
                                 tablefmt="rst",
                                 showindex=False)
+        # write on CLI
+        print("\nStatistical evaluation of the whole RST tree pair set:")
         print(evalTableCli)
         pass
 

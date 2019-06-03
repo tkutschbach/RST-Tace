@@ -11,3 +11,6 @@ from .tableoutputs import RelTableDummyOutput
 from .tableoutputs import CompTableLogger
 from .tableoutputs import CompTableCliOutput
 from .tableoutputs import CompTableDummyOutput
+from .tableoutputs import EvalTableLogger
+from .tableoutputs import EvalTableCliOutput
+from .tableoutputs import EvalTableDummyOutput

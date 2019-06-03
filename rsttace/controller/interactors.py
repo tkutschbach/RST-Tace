@@ -49,10 +49,13 @@ class EvaluateInteractor:
 
     def run(self):
         compTables = []
-        for rstInput1, rstInput2, compTableOut in self.pairTripleList:
+        for rstInput1, rstInput2, compTableOut, name in self.pairTripleList:
+            print("\nCompare RST-tree pair: " + name) 
             compare = CompareInteractor(rstInput1, rstInput2, [compTableOut])
             compTable = compare.run()
+            compTable.name = name
             compTables.append(compTable)
+        print("\nCalculate overall evaluation of all comparisons") 
         evalTable = self.tableEvaluator.run(compTables)
         for output in self.tableOutputs:
             output.write(evalTable)

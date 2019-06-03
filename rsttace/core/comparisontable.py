@@ -90,11 +90,13 @@ class ComparisonTable():
     __comparisons: list
     matchingRatios: dict
     cohensKappas: dict
+    name: str
 
     def __init__(self):
         self.__comparisons = []
         self.matchingRatios = {}
         self.cohensKappas = {}
+        self.name = ""
         return
 
     def get(self, index: int):
