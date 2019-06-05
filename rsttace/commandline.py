@@ -13,6 +13,7 @@ from rsttace.controller.interactors import EvaluateInteractor
 from rsttace.input import RstTreeParser
 from rsttace.output import RelTableLogger, RelTableCliOutput
 from rsttace.output import CompTableLogger, CompTableCliOutput
+from rsttace.output import CompTableDummyOutput
 from rsttace.output import EvalTableLogger, EvalTableCliOutput
 
 
@@ -75,8 +76,6 @@ each other. If INPUTPATH1 and INPUTPATH2 both point to directories \
 then all '.rs3' files in both directories will be compared with each other. \
 If '-o' is set, then the results will be written to OUTPUTPATH. Otherwise,
 the results will be printed back on the command line. """
-    checkAndMakeDir(output)
-
     if isFile(inputpath1) and isFile(inputpath2):
         compareTwoFiles(inputpath1, inputpath2, output, verbose)
     elif isDirectory(inputpath1) and isDirectory(inputpath2):
@@ -93,6 +92,7 @@ def compareTwoFiles(rstfile1, rstfile2, outputdir, verbose):
 
     tableOutputs = []
     if outputdir != "":
+        checkAndMakeDir(outputdir)
         filename1 = extractFileName(rstfile1)
         filename2 = extractFileName(rstfile2)
         outputfile = "Comparison_" + filename1 + "+" + filename2 + ".csv"
@@ -115,7 +115,10 @@ def compareTwoFolders(inputdir1, inputdir2, outputdir, verbose):
     print("RST tree set B: " + inputdir2)
 
     # prepare input and output classes
-    pairTripleList = buildPairTripleList(inputdir1, inputdir2, outputdir)
+    pairTripleList = buildPairTripleList(inputdir1,
+                                         inputdir2,
+                                         outputdir,
+                                         verbose)
     tableOutputs = buildEvalTableOutputs(outputdir, verbose)
 
     print("\nFollowing RST tree pairs have been found and will be compared:")
@@ -128,7 +131,7 @@ def compareTwoFolders(inputdir1, inputdir2, outputdir, verbose):
     return
 
 
-def buildPairTripleList(inputdir1: str, inputdir2: str, outputdir: str):
+def buildPairTripleList(inputdir1, inputdir2, outputdir, verbose):
     pairTripleList = []
     for file in listDirectory(inputdir1):
         if file.endswith(".rs3") and file in listDirectory(inputdir2):
@@ -139,8 +142,11 @@ def buildPairTripleList(inputdir1: str, inputdir2: str, outputdir: str):
                 outputfile = "Comparison_" + filename + ".csv"
                 outputpath = joinPaths(outputdir, outputfile)
                 compTableOutput = CompTableLogger(outputpath)
-            else:
+            elif verbose:
                 compTableOutput = CompTableCliOutput()
+            else:
+                compTableOutput = CompTableDummyOutput()
+
             pairTuple = (rstParser1, rstParser2, compTableOutput, filename)
             pairTripleList.append(pairTuple)
     return sorted(pairTripleList, key=lambda tuple: tuple[-1])
@@ -149,6 +155,7 @@ def buildPairTripleList(inputdir1: str, inputdir2: str, outputdir: str):
 def buildEvalTableOutputs(outputdir: str, verbose: bool):
     tableOutputs = []
     if outputdir != "":
+        checkAndMakeDir(outputdir)
         outputfile = joinPaths(outputdir, "EvaluationResults.csv")
         tableOutputs.append(EvalTableLogger(outputfile))
     if(verbose or outputdir == ""):
