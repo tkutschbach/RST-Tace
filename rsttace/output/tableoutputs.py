@@ -114,18 +114,27 @@ class EvalTableLogger(IEvaluationTableOutput):
         pass
 
     def write(self, evalTable: EvaluationTable):
-
         writeFile = self.__isNotEmpty(self.outputFile)
         if writeFile:
             print("Write result table of RST tree pair comparison to: "
                   + self.outputFile)
-            evalTable.dataFrame.to_csv(self.outputFile, index=False)
+            extDataFrame = self.__appendStatsToDataFrame(evalTable)
+            extDataFrame.to_csv(self.outputFile, index=False)
             print("Output file written successfully.")
         pass
 
     def __isNotEmpty(self, s: str) -> bool:
         """ Checks whether string is empty or not """
         return bool(s and s.strip())
+
+    def __appendStatsToDataFrame(self, evalTable):
+        dataFrame = evalTable.dataFrame.append(pd.Series(),
+                                               ignore_index=True,
+                                               sort=False)
+        statsFrame = evalTable.stats
+        statsFrame["Name"] = statsFrame.index
+
+        return dataFrame.append(statsFrame, sort=False)
 
 
 class EvalTableCliOutput(IEvaluationTableOutput):
@@ -135,10 +144,17 @@ class EvalTableCliOutput(IEvaluationTableOutput):
                                 headers='keys',
                                 tablefmt="rst",
                                 showindex=False)
+        statsTableCli = tabulate(evalTable.stats,
+                                 headers='keys',
+                                 tablefmt="rst",
+                                 showindex=True)
         # write on CLI
         print("\nStatistical evaluation of the whole RST tree pair set:")
+        print("\nResults for each RST tree pair:")
         print(evalTableCli)
-        pass
+        print("\nOverall results of whole dataset:")
+        print(statsTableCli)
+        return
 
 
 class EvalTableDummyOutput(IEvaluationTableOutput):

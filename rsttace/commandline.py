@@ -91,6 +91,8 @@ def compareTwoFiles(rstfile1, rstfile2, outputdir, verbose):
     rstParser2 = RstTreeParser(rstfile2)
 
     tableOutputs = []
+    if(verbose or outputdir == ""):
+        tableOutputs.append(CompTableCliOutput())
     if outputdir != "":
         checkAndMakeDir(outputdir)
         filename1 = extractFileName(rstfile1)
@@ -98,8 +100,6 @@ def compareTwoFiles(rstfile1, rstfile2, outputdir, verbose):
         outputfile = "Comparison_" + filename1 + "+" + filename2 + ".csv"
         outputpath = joinPaths(outputdir, outputfile)
         tableOutputs.append(CompTableLogger(outputpath))
-    if(verbose or outputdir == ""):
-        tableOutputs.append(CompTableCliOutput())
 
     print("\nComparing the following two RST trees:")
     print("RST tree A: " + rstfile1)
@@ -154,12 +154,12 @@ def buildPairTripleList(inputdir1, inputdir2, outputdir, verbose):
 
 def buildEvalTableOutputs(outputdir: str, verbose: bool):
     tableOutputs = []
-    if outputdir != "":
-        checkAndMakeDir(outputdir)
-        outputfile = joinPaths(outputdir, "EvaluationResults.csv")
-        tableOutputs.append(EvalTableLogger(outputfile))
     if(verbose or outputdir == ""):
         tableOutputs.append(EvalTableCliOutput())
+    if outputdir != "":
+        checkAndMakeDir(outputdir)
+        outputfile = joinPaths(outputdir, "Comparison_OverallResults.csv")
+        tableOutputs.append(EvalTableLogger(outputfile))
     return tableOutputs
 
 

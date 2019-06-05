@@ -8,6 +8,7 @@ class TableEvaluator:
         return
 
     def run(self, compTables: list) -> EvaluationTable:
+        # create data lists
         nameList = []
         nucF1List = []
         nucKappaList = []
@@ -19,7 +20,6 @@ class TableEvaluator:
         attKappaList = []
         averageF1List = []
         averageKappaList = []
-
         for compTable in compTables:
             ratios = compTable.matchingRatios
             kappas = compTable.cohensKappas
@@ -35,6 +35,7 @@ class TableEvaluator:
             averageF1List.append(ratios["Average"])
             averageKappaList.append(kappas["Average"])
 
+        # generate dataframe
         df = pd.DataFrame({"Name": nameList,
                            "Nuclearity-Ratio": nucF1List,
                            "Nuclearity-Kappa": nucKappaList,
