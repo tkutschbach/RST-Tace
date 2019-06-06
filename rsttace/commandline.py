@@ -143,9 +143,7 @@ def buildPairTupleList(inputdir1, inputdir2, outputdir, verbose):
             if outputdir != "":
                 compfile = "Comparison_" + filename + "_Table.csv"
                 comppath = joinPaths(outputdir, compfile)
-                evalfile = "Comparison_" + filename + "_Metrics.csv"
-                evalpath = joinPaths(outputdir, evalfile)
-                compTableOutput = CompTableLogger(comppath, evalpath)
+                compTableOutput = CompTableLogger(comppath)
             elif verbose:
                 compTableOutput = CompTableCliOutput()
             else:

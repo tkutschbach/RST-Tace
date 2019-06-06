@@ -35,7 +35,6 @@ RST-Tace currently offers the following functionality:
      ```rsttace compare <directory-1>/ <directory-2>/ -o <output-directory>/```
      > * Reads each file *\<rst-tree\>.rs3* available in both input directories (i.e., *\<directory-1\>/\<rst-tree\>.rs3* and *\<directory-2\>/\<rst-tree\>.rs3*) and compares both different versions with each other
      > * Generates comparison table for each file pair: *\<output-directory\>/Comparison_\<rst-tree\>_Table.csv*
-     > * Generates comparison metrics for each file pair: *\<output-directory\>/Comparison_\<rst-tree\>_Metrics.csv*
      > * Generates overall comparison metrics for set of pairs: *\<output-directory\>/Comparison_OverallMetrics.csv*
 
 Stating an output directory (via `-o <output-directory>/`) is optional. If ommited, the results will be printed on the command line.
