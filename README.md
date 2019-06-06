@@ -23,18 +23,18 @@ RST-Tace currently offers the following functionality:
 1. Parse a single RST tree, *analyse* and list its annotated relations:
    * ```rsttace analyse <rst-tree>.rs3 -o <output-directory>/```
      > * Reads single file: *\<rst-tree\>.rs3*
-     > * Generates result: *\<output-folder\>/Analysis_\<rst-tree>.csv*
+     > * Generates result: *\<output-directory\>/Analysis_\<rst-tree>.csv*
 
 2. Parses RST tree pairs and *compares* them with each other:
    * Compare two single trees:\
      ```rsttace compare <rst-tree-1>.rs3 <rst-tree-2>.rs3 -o <output-directory>/```
      > * Reads and compares two files: *\<rst-tree-1\>.rs3* and *\<rst-tree-2\>.rs3*
-     > * Generates comparison result: *\<output-folder\>/Comparison_\<rst-tree-1>+\<rst-tree-2\>.csv*
+     > * Generates comparison result: *\<output-directory\>/Comparison_\<rst-tree-1>+\<rst-tree-2\>.csv*
    * Compare two sets of trees (organized in separate directories):\
      ```rsttace compare <directory-1>/ <directory-2>/ -o <output-directory>/```
-     > * Reads each file *\<rst-tree\>.rs3* available in both input directories and compares both different versions with each other
-     > * Generates comparison result for each *\<rst-tree\>.rs3* pair found : *\<output-folder\>/Comparison_\<rst-tree\>.csv*
-     > * Generates overall comparison for whole tree pair set: *\<output-folder\>/Comparison_Overall.csv*
+     > * Reads each file *\<rst-tree\>.rs3* available in both input directories (i.e., *\<directory-1\>/\<rst-tree\>.rs3* and *\<directory-2\>/\<rst-tree\>.rs3*) and compares both different versions with each other
+     > * Generates comparison result for each file pair: *\<output-directory\>/Comparison_\<rst-tree\>.csv*
+     > * Generates overall comparison for set of pairs: *\<output-directory\>/Comparison_Overall.csv*
 
 Stating an output directory (via `-o <output-directory>/`) is optional. If ommited, the results will be printed on the command line.
 
