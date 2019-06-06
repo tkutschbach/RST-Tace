@@ -97,9 +97,11 @@ def compareTwoFiles(rstfile1, rstfile2, outputdir, verbose):
         checkAndMakeDir(outputdir)
         filename1 = extractFileName(rstfile1)
         filename2 = extractFileName(rstfile2)
-        outputfile = "Comparison_" + filename1 + "+" + filename2 + ".csv"
-        outputpath = joinPaths(outputdir, outputfile)
-        tableOutputs.append(CompTableLogger(outputpath))
+        compfile = "Comparison_" + filename1 + "+" + filename2 + "_Table.csv"
+        comppath = joinPaths(outputdir, compfile)
+        evalfile = "Comparison_" + filename1 + "+" + filename2 + "_Metrics.csv"
+        evalpath = joinPaths(outputdir, evalfile)
+        tableOutputs.append(CompTableLogger(comppath, evalpath))
 
     print("\nComparing the following two RST trees:")
     print("RST tree A: " + rstfile1)
@@ -139,9 +141,11 @@ def buildPairTupleList(inputdir1, inputdir2, outputdir, verbose):
             rstParser1 = RstTreeParser(joinPaths(inputdir1, file))
             rstParser2 = RstTreeParser(joinPaths(inputdir2, file))
             if outputdir != "":
-                outputfile = "Comparison_" + filename + ".csv"
-                outputpath = joinPaths(outputdir, outputfile)
-                compTableOutput = CompTableLogger(outputpath)
+                compfile = "Comparison_" + filename + "_Table.csv"
+                comppath = joinPaths(outputdir, compfile)
+                evalfile = "Comparison_" + filename + "_Metrics.csv"
+                evalpath = joinPaths(outputdir, evalfile)
+                compTableOutput = CompTableLogger(comppath, evalpath)
             elif verbose:
                 compTableOutput = CompTableCliOutput()
             else:
@@ -158,7 +162,7 @@ def buildEvalTableOutputs(outputdir: str, verbose: bool):
         tableOutputs.append(CompareSetTableCliOutput())
     if outputdir != "":
         checkAndMakeDir(outputdir)
-        outputfile = joinPaths(outputdir, "Comparison_OverallResults.csv")
+        outputfile = joinPaths(outputdir, "Comparison_OverallMetrics.csv")
         tableOutputs.append(CompareSetTableLogger(outputfile))
     return tableOutputs
 

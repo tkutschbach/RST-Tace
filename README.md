@@ -29,12 +29,14 @@ RST-Tace currently offers the following functionality:
    * Compare two single trees:\
      ```rsttace compare <rst-tree-1>.rs3 <rst-tree-2>.rs3 -o <output-directory>/```
      > * Reads and compares two files: *\<rst-tree-1\>.rs3* and *\<rst-tree-2\>.rs3*
-     > * Generates comparison result: *\<output-directory\>/Comparison_\<rst-tree-1>+\<rst-tree-2\>.csv*
+     > * Generates comparison table: *\<output-directory\>/Comparison_\<rst-tree-1>+\<rst-tree-2\>_Table.csv*
+     > * Generates comparison metrics: *\<output-directory\>/Comparison_\<rst-tree-1>+\<rst-tree-2\>_Metrics.csv*
    * Compare two sets of trees (organized in separate directories):\
      ```rsttace compare <directory-1>/ <directory-2>/ -o <output-directory>/```
      > * Reads each file *\<rst-tree\>.rs3* available in both input directories (i.e., *\<directory-1\>/\<rst-tree\>.rs3* and *\<directory-2\>/\<rst-tree\>.rs3*) and compares both different versions with each other
-     > * Generates comparison result for each file pair: *\<output-directory\>/Comparison_\<rst-tree\>.csv*
-     > * Generates overall comparison for set of pairs: *\<output-directory\>/Comparison_Overall.csv*
+     > * Generates comparison table for each file pair: *\<output-directory\>/Comparison_\<rst-tree\>_Table.csv*
+     > * Generates comparison metrics for each file pair: *\<output-directory\>/Comparison_\<rst-tree\>_Metrics.csv*
+     > * Generates overall comparison metrics for set of pairs: *\<output-directory\>/Comparison_OverallMetrics.csv*
 
 Stating an output directory (via `-o <output-directory>/`) is optional. If ommited, the results will be printed on the command line.
 

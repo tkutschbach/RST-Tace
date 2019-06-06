@@ -53,17 +53,25 @@ class RelTableDummyOutput(IRelTableOutput):
 
 
 class CompTableLogger(IComparisonTableOutput):
-    def __init__(self, outputFile=""):
-        self.outputFile = outputFile
+    def __init__(self, compFile="", evalFile=""):
+        self.compFile = compFile
+        self.evalFile = evalFile
         pass
 
     def write(self, compTable: ComparisonTable):
-        writeFile = self.__isNotEmpty(self.outputFile)
-        if writeFile:
+        writeCompFile = self.__isNotEmpty(self.compFile)
+        if writeCompFile:
             print("Write result table of RST tree pair comparison to: "
-                  + self.outputFile)
+                  + self.compFile)
             dataFrame = createComparisonDataframe(compTable)
-            dataFrame.to_csv(self.outputFile, index=False, encoding='utf-8-sig')
+            dataFrame.to_csv(self.compFile, index=False, encoding='utf-8-sig')
+            print("Output file written successfully.")
+        writeEvalFile = self.__isNotEmpty(self.evalFile)
+        if writeEvalFile:
+            print("Write result metrics of RST tree pair evalarison to: "
+                  + self.evalFile)
+            dataFrame = createEvaluationDataframe(compTable)
+            dataFrame.to_csv(self.evalFile, index=True, encoding='utf-8-sig')
             print("Output file written successfully.")
 
     def __isNotEmpty(self, s: str) -> bool:
