@@ -21,14 +21,22 @@ After successful installation, RST-Tace can be used on the terminal via: `rsttac
 RST-Tace currently offers the following functionality:
 
 1. Parse a single RST tree, *analyse* and list its annotated relations:
+   * ```rsttace analyse <rst-tree>.rs3 -o <output-directory>/```
+     > * Reads single file: *\<rst-tree\>.rs3*
+     > * Generates result: *\<output-folder\>/Analysis_\<rst-tree>.csv*
 
-```rsttace analyse <rst-tree>.rs3 -o <output-file>.csv```
+2. Parses RST tree pairs and *compares* them with each other:
+   * Compare two single trees:\
+     ```rsttace compare <rst-tree-1>.rs3 <rst-tree-2>.rs3 -o <output-directory>/```
+     > * Reads and compares two files: *\<rst-tree-1\>.rs3* and *\<rst-tree-2\>.rs3*
+     > * Generates comparison result: *\<output-folder\>/Comparison_\<rst-tree-1>+\<rst-tree-2\>.csv*
+   * Compare two sets of trees (organized in separate directories):\
+     ```rsttace compare <directory-1>/ <directory-2>/ -o <output-directory>/```
+     > * Reads each file *\<rst-tree\>.rs3* available in both input directories and compares both different versions with each other
+     > * Generates comparison result for each *\<rst-tree\>.rs3* pair found : *\<output-folder\>/Comparison_\<rst-tree\>.csv*
+     > * Generates overall comparison for whole tree pair set: *\<output-folder\>/Comparison_Overall.csv*
 
-2. Parse an RST tree pair and *compare* the trees with each other:
-
-```rsttace compare <rst-tree-1>.rs3 <rst-tree-2>.rs3 -o <output-file>.csv```
-
-Stating an output file (via `-o <output-file>.csv`) is optional. If ommited, the results will be printed on the command line.
+Stating an output directory (via `-o <output-directory>/`) is optional. If ommited, the results will be printed on the command line.
 
 ## Versioning
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/tkutschbach/RST-Tace/tags).
