@@ -1,4 +1,4 @@
-from .evaluationtable import CompareSetTable
+from .comparesettable import CompareSetTable
 
 import pandas as pd
 
