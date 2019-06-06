@@ -3,11 +3,11 @@ from tabulate import tabulate
 
 from rsttace.core import RelTable, Relation, RelElement
 from rsttace.core import ComparisonTable, Comparison
-from rsttace.core import EvaluationTable
+from rsttace.core import CompareSetTable
 from rsttace.core import MatchingDistance, Equivalency
 from rsttace.controller import IRelTableOutput
 from rsttace.controller import IComparisonTableOutput
-from rsttace.controller import IEvaluationTableOutput
+from rsttace.controller import ICompareSetTableOutput
 
 
 # RelTable outputs
@@ -58,14 +58,6 @@ class CompTableLogger(IComparisonTableOutput):
         pass
 
     def write(self, compTable: ComparisonTable):
-#        evalTableFrame = createEvaluationDataframe(compTable)
-#        evalTableCli = tabulate(evalTableFrame,
-#                                headers='keys',
-#                                tablefmt="rst",
-#                                showindex=True)
-#        print("\nStatistical metrics:")
-#        print(evalTableCli)
-#
         writeFile = self.__isNotEmpty(self.outputFile)
         if writeFile:
             print("Write result table of RST tree pair comparison to: "
@@ -108,17 +100,17 @@ class CompTableDummyOutput(IComparisonTableOutput):
 # Eval table output
 
 
-class EvalTableLogger(IEvaluationTableOutput):
+class CompareSetTableLogger(ICompareSetTableOutput):
     def __init__(self, outputFile=""):
         self.outputFile = outputFile
         pass
 
-    def write(self, evalTable: EvaluationTable):
+    def write(self, compSetTable: CompareSetTable):
         writeFile = self.__isNotEmpty(self.outputFile)
         if writeFile:
             print("Write result table of RST tree pair comparison to: "
                   + self.outputFile)
-            extDataFrame = self.__appendStatsToDataFrame(evalTable)
+            extDataFrame = self.__appendStatsToDataFrame(compSetTable)
             extDataFrame.to_csv(self.outputFile, index=False)
             print("Output file written successfully.")
         pass
@@ -137,14 +129,14 @@ class EvalTableLogger(IEvaluationTableOutput):
         return dataFrame.append(statsFrame, sort=False)
 
 
-class EvalTableCliOutput(IEvaluationTableOutput):
-    def write(self, evalTable: EvaluationTable):
+class CompareSetTableCliOutput(ICompareSetTableOutput):
+    def write(self, compSetTable: CompareSetTable):
         # prepare tables
-        evalTableCli = tabulate(evalTable.dataFrame,
+        evalTableCli = tabulate(compSetTable.dataFrame,
                                 headers='keys',
                                 tablefmt="rst",
                                 showindex=False)
-        statsTableCli = tabulate(evalTable.stats,
+        statsTableCli = tabulate(compSetTable.stats,
                                  headers='keys',
                                  tablefmt="rst",
                                  showindex=True)
@@ -157,8 +149,8 @@ class EvalTableCliOutput(IEvaluationTableOutput):
         return
 
 
-class EvalTableDummyOutput(IEvaluationTableOutput):
-    def write(self, evalTable: EvaluationTable):
+class CompareSetTableDummyOutput(ICompareSetTableOutput):
+    def write(self, compSetTable: CompareSetTable):
         pass
 
 

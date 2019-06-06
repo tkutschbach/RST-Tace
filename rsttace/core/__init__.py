@@ -11,5 +11,5 @@ from .reltablegenerator import TableGenerator
 from .comparisontable import ComparisonTable, Comparison,\
                              MatchingDistance, Equivalency
 from .comptablegenerator import TableComparer
-from .evaluationtable import EvaluationTable
-from .evaltablegenerator import TableEvaluator
+from .evaluationtable import CompareSetTable
+from .evaltablegenerator import TableSetComparer

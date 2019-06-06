@@ -1,5 +1,5 @@
 from rsttace.controller import IRstInput
-from rsttace.core import TableGenerator, TableComparer, TableEvaluator
+from rsttace.core import TableGenerator, TableComparer, TableSetComparer
 
 
 class AnalyseInteractor:
@@ -39,24 +39,24 @@ class CompareInteractor:
         return compTable
 
 
-class EvaluateInteractor:
+class CompareSetInteractor:
     def __init__(self,
-                 pairTripleList: list,
+                 pairTupleList: list,
                  tableOutputs: list):
-        self.pairTripleList = pairTripleList
+        self.pairTupleList = pairTupleList
         self.tableOutputs = tableOutputs
-        self.tableEvaluator = TableEvaluator()
+        self.tableSetComparer = TableSetComparer()
 
     def run(self):
         compTables = []
-        for rstInput1, rstInput2, compTableOut, name in self.pairTripleList:
-            print("\nCompare RST-tree pair: " + name) 
+        for rstInput1, rstInput2, compTableOut, name in self.pairTupleList:
+            print("\nCompare RST-tree pair: " + name)
             compare = CompareInteractor(rstInput1, rstInput2, [compTableOut])
             compTable = compare.run()
             compTable.name = name
             compTables.append(compTable)
         print("\nCalculate overall evaluation of all comparisons") 
-        evalTable = self.tableEvaluator.run(compTables)
+        evalTable = self.tableSetComparer.run(compTables)
         for output in self.tableOutputs:
             output.write(evalTable)
         return evalTable

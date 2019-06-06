@@ -1,13 +1,13 @@
-from .evaluationtable import EvaluationTable
+from .evaluationtable import CompareSetTable
 
 import pandas as pd
 
 
-class TableEvaluator:
+class TableSetComparer:
     def __init__(self):
         return
 
-    def run(self, compTables: list) -> EvaluationTable:
+    def run(self, compTables: list) -> CompareSetTable:
         # create data lists
         nameList = []
         nucF1List = []
@@ -48,4 +48,4 @@ class TableEvaluator:
                            "Average-Ratio": averageF1List,
                            "Average-Kappa": averageKappaList})
 
-        return EvaluationTable(df)
+        return CompareSetTable(df)

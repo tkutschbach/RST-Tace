@@ -36,8 +36,7 @@ class RstTreeParser(IRstInput):
             treeGenerator = TreeGenerator(relations)
             return treeGenerator.run(segmentList)
         else:
-            raise InvalidRstFile("Unexpected XML root, \
-                                  expected the following tag: <rst>")
+            raise InvalidRstFile("Unexpected XML root, expected the following tag: <rst>")
 
 
 class BodyEntry():
@@ -49,8 +48,7 @@ class BodyEntry():
             if isinstance(xmlRelname, str):
                 self.relname = xmlRelname.lower()
         else:
-            raise InvalidRstFile("Invalid segment or group:\
-                                  ID is missing")
+            raise InvalidRstFile("Invalid segment or group: ID is missing")
 
     def __validBodyEntry(self, xmlEntry) -> bool:
         if xmlEntry.get('id') is not None:
@@ -66,8 +64,7 @@ class Segment(BodyEntry):
             self.text = xmlEntry.text.strip('\n')
             self.segmentID = segmentID
         else:
-            raise InvalidRstFile("Invalid segment or group:\
-                                  Text is missing")
+            raise InvalidRstFile("Invalid segment or group: Text is missing")
 
     def __validSegment(self, xmlEntry) -> bool:
         if xmlEntry.text is not None:
@@ -82,8 +79,7 @@ class Group(BodyEntry):
         if self.__validGroup(xmlEntry):
             self.type = xmlEntry.get('type')
         else:
-            raise InvalidRstFile("Invalid segment or group:\
-                                  Type is missing")
+            raise InvalidRstFile("Invalid segment or group: Type is missing")
 
     def __validGroup(self, xmlEntry) -> bool:
         if xmlEntry.get('type') is not None:
@@ -190,16 +186,14 @@ class TreeGenerator():
                     if not self.siblingDict.__contains__(entry.parent):
                         self.siblingDict[entry.parent] = entry.entryID
                     else:
-                        raise InvalidRstFile("Multiple mono nuclear relations\
-                                              for single element")
+                        raise InvalidRstFile("Multiple mono nuclear relations for single element")
                 else:
                     self.childrenDict[entry.parent].append(entry.entryID)
             else:
                 if rootID is None:
                     rootID = entry.entryID
                 else:
-                    raise InvalidRstFile("Multiple root elements\
-                                          have been found")
+                    raise InvalidRstFile("Multiple root elements have been found")
 
         return rootID
 
@@ -236,8 +230,7 @@ class TreeGenerator():
                 if "" == relname:
                     relname = childXML.relname
                 elif relname != childXML.relname:
-                    raise InvalidRstFile("Different relation names in\
-                                          one multi nuclear relation")
+                    raise InvalidRstFile("Different relation names in one multi nuclear relation")
             #   create new relation between node and children
             if RstType.SPAN == self.relations[relname]:
                 span = Span(rstNode, childrenNodes)

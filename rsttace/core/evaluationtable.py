@@ -1,5 +1,5 @@
 
-class EvaluationTable:
+class CompareSetTable:
     def __init__(self, dataFrame):
         self.dataFrame = dataFrame
         self.stats = statEval(dataFrame)

@@ -2,13 +2,13 @@ from unittest import TestCase
 
 from rsttace.controller.interactors import AnalyseInteractor
 from rsttace.controller.interactors import CompareInteractor
-from rsttace.controller.interactors import EvaluateInteractor
+from rsttace.controller.interactors import CompareSetInteractor
 from rsttace.controller import IRstInput
 from rsttace.controller import IRelTableOutput
 from rsttace.controller import IComparisonTableOutput
-from rsttace.controller import IEvaluationTableOutput
+from rsttace.controller import ICompareSetTableOutput
 from rsttace.core import RstTree
-from rsttace.core import RelTable, ComparisonTable, EvaluationTable
+from rsttace.core import RelTable, ComparisonTable, CompareSetTable
 
 
 class FakeInput(IRstInput):
@@ -36,7 +36,7 @@ class FakeCompTableOutput(IComparisonTableOutput):
         self.write_timesCalled += 1
 
 
-class FakeEvalTableOutput(IEvaluationTableOutput):
+class FakeEvalTableOutput(ICompareSetTableOutput):
     def __init__(self):
         self.write_timesCalled = 0
 
@@ -70,7 +70,7 @@ class FakeEvaluator():
 
     def run(self, compTables: list) -> EvaluationTable:
         self.run_timesCalled += 1
-        return EvaluationTable(None)
+        return CompareSetTable(None)
 
 
 class TestAnalyseInteractor(TestCase):
@@ -195,7 +195,7 @@ class TestEvaluateInteractor(TestCase):
         pair3triple = (pair3tree1, pair3tree2, pair3compOut)
 
         # Operate
-        interactor = EvaluateInteractor([pair1triple,
+        interactor = CompareSetInteractor([pair1triple,
                                          pair2triple,
                                          pair3triple],
                                         [evalOutput1, evalOutput2])
@@ -205,7 +205,7 @@ class TestEvaluateInteractor(TestCase):
 
         # Check
         self.assertEqual(interactor.tableEvaluator.run_timesCalled, 1)
-        self.assertIsInstance(returnVal, EvaluationTable)
+        self.assertIsInstance(returnVal, CompareSetTable)
 
         self.assertEqual(pair1tree1.read_timesCalled, 1)
         self.assertEqual(pair1tree2.read_timesCalled, 1)
