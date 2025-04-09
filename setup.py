@@ -7,12 +7,12 @@ def readme():
 
 
 setup(name='rsttace',
-      version='0.1.0',
+      version='0.1.1',
       description='RST-Tace',
       long_description=readme(),
       classifiers=[
         'Development Status :: 3 - Alpha',
-        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.13.2',
         'Topic :: Rethorical Structure Theory :: Evaluation',
       ],
       keywords='rethorical structure theory',

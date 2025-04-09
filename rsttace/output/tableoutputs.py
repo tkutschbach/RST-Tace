@@ -128,13 +128,14 @@ class CompareSetTableLogger(ICompareSetTableOutput):
         return bool(s and s.strip())
 
     def __appendStatsToDataFrame(self, evalTable):
-        dataFrame = evalTable.dataFrame.append(pd.Series(),
-                                               ignore_index=True,
-                                               sort=False)
+        # App empty row as separator:
+        empty_row = pd.Series()  # This creates a Series with no data
+        dataFrame = pd.concat([evalTable.dataFrame, empty_row.to_frame().T], ignore_index=True, sort=False)
+
+        # Add statsFrame as last row to dataFrame
         statsFrame = evalTable.stats
         statsFrame["Name"] = statsFrame.index
-
-        return dataFrame.append(statsFrame, sort=False)
+        return pd.concat([dataFrame, statsFrame], ignore_index=True, sort=False)
 
 
 class CompareSetTableCliOutput(ICompareSetTableOutput):

@@ -8,7 +8,7 @@ For more information, please refer to Wan et.al. (2019).*
 ## Getting Started
 
 ### Prerequisites
-RST-Tace is a tool based on Python. It has been developed and tested with [Python 3.6](https://www.python.org/downloads/release/python-360/). A guide on how to install Python can be found [here](https://realpython.com/installing-python/).
+RST-Tace is a tool based on Python. It has been developed with [Python 3.6](https://www.python.org/downloads/release/python-360/) and tested with [Python 3.13.2](https://www.python.org/downloads/release/python-3132/). A guide on how to install Python can be found [here](https://realpython.com/installing-python/).
 
 ### Installing
 RST-Tace can be installed by the following command (once Python 3 has been installed):
